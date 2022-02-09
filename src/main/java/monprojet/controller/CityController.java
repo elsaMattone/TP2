@@ -11,6 +11,7 @@ import monprojet.dao.CountryRepository;
 import monprojet.entity.City;
 import monprojet.entity.Country;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/cities") // This means URL's start with /cities (after Application path)
@@ -40,6 +41,32 @@ public class CityController {
 		model.addAttribute("city", nouvelle);
 		model.addAttribute("countries", countryDao.findAll());
 		return DEFAULT_VIEW;
+	}
+        
+        /**
+	 * Appelé par le lien 'Modifier' dans 'showCities.html'
+	 * Montre le formulaire permettant de modifier une ville
+	 * @param city à partir du code de la ville transmis en paramètre, 
+	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
+	 * @param model pour transmettre les informations à la vue
+	 * @return le nom de la vue à afficher ('formulaireCity.html')
+	 */
+	@GetMapping(path = "edit")
+	public String montreLeFormulairePourEdition(@RequestParam("id") City city, Model model) {
+		model.addAttribute("city", city);
+		return "cities";
+	}
+        
+        /**
+	 * Appelé par le lien 'Supprimer' dans 'showCategories.html'
+	 * @param categorie à partir du code de la catégorie transmis en paramètre, 
+	 *                  Spring fera une requête SQL SELECT pour chercher la catégorié dans la base
+	 * @return une redirection vers l'affichage de la liste des catégories
+	 */
+	@GetMapping(path = "delete")
+	public String supprimeUneCategoriePuisMontreLaListe(@RequestParam("id") City city) {
+		cityDao.delete(city); // Ici on peut avoir une erreur (Si il y a des produits dans cette catégorie par exemple)
+		return "redirect:show"; // on se redirige vers l'affichage de la liste
 	}
         
         /**

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
-<body>
+<body onload="document.querySelector('#country').value='{{city.country.id}}'">
 	<h1>Edition des villes</h1>
 	<form method="POST" action="save"> {{! On revient sur le contrôleur avec la méthode POST}}
 		<label for="id">Id</label>
@@ -17,10 +17,13 @@
 			{{#city.id}} value="{{city.id}}" {{/city.id}} 
 			placeholder="Read-only, auto-généré"
 			readonly="readonly"
+                        id="id"
 		/>
 		<label for="nom">Nom de la ville</label>
-		<input name="name" value="{{city.name}}" />
-		<label for="population">Population (en millions)</label>
+        <label>
+            <input name="name" value="{{city.name}}" />
+        </label>
+        <label for="population">Population (en millions)</label>
 		<input name="population" value="{{city.population}}" type="number"/>
 		<label for="country">Pays</label>
 		<select name="country"  id="countrySelector">
@@ -32,12 +35,16 @@
 	</form>
 
         <table>
-	<tr><th>Nom</th><th>Population</th><th>Pays</th></tr>
+	<tr><th>Nom</th><th>Population</th><th>Pays</th><th>Action</th></tr>
 	{{#cities}}
 	<tr>
 		<td>{{name}}</td>
 		<td>{{population}}</td>
 		<td>{{country.name}}</td>
+                <td>
+                    <a href='edit?city={{city}}'>Modifier</a>
+                    <a href='delete?city={{city}}'>Supprimer</a>
+                </td>
 	</tr>
 	{{/cities}}
 	</table>
