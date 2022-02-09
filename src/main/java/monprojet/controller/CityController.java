@@ -52,15 +52,16 @@ public class CityController {
 	 * @return le nom de la vue à afficher ('formulaireCity.html')
 	 */
 	@GetMapping(path = "edit")
-	public String montreLeFormulairePourEdition(@RequestParam("id") City city, Model model) {
-		model.addAttribute("city", city);
+	public String montreLeFormulairePourEdition(@RequestParam("id") int id, City city, Model model) {
+		model.addAttribute("city", cityDao.findById(id).get());
+                model.addAttribute("country", cityDao.findAll());
 		return "cities";
 	}
         
         /**
 	 * Appelé par le lien 'Supprimer' dans 'showCategories.html'
-	 * @param categorie à partir du code de la catégorie transmis en paramètre, 
-	 *                  Spring fera une requête SQL SELECT pour chercher la catégorié dans la base
+	 * @param city à partir du code de la ville transmis en paramètre, 
+	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
 	 * @return une redirection vers l'affichage de la liste des catégories
 	 */
 	@GetMapping(path = "delete")
