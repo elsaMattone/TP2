@@ -8,8 +8,39 @@
 </head>
 
 <body>
-	<h1>Exemple</h1>
-	<h2>Hello {{message}} !</h2>
+	<h1>Edition des villes</h1>
+	<form method="POST" action="save"> {{! On revient sur le contrôleur avec la méthode POST}}
+		<label for="id">Id</label>
+		{{! On pourrait mettre un champ caché <input type="hidden>"}}
+		<input name="id" 
+			{{! Mustache n'aime pas les valeurs nulles ! }}
+			{{#city.id}} value="{{city.id}}" {{/city.id}} 
+			placeholder="Read-only, auto-généré"
+			readonly="readonly"
+		/>
+		<label for="nom">Nom de la ville</label>
+		<input name="name" value="{{city.name}}" />
+		<label for="population">Population (en millions)</label>
+		<input name="population" value="{{city.population}}" type="number"/>
+		<label for="country">Pays</label>
+		<select name="country"  id="countrySelector">
+			{{#countries}} {{! Une option par pays}}
+				<option value="{{id}}">{{name}}</option>
+			{{/countries}}
+		</select><hr>
+		<input type="submit" value="Enregistrer" />
+	</form>
+
+        <table>
+	<tr><th>Nom</th><th>Population</th><th>Pays</th></tr>
+	{{#cities}}
+	<tr>
+		<td>{{name}}</td>
+		<td>{{population}}</td>
+		<td>{{country.name}}</td>
+	</tr>
+	{{/cities}}
+	</table>
 </body>
 
 </html>
