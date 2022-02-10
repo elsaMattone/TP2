@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
-	<title>Exemple de template</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="/css/style.css" />
-</head>
+    <head>
+        <title>Exemple de template</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    </head>
 
-<body>
-	<h1>Edition des villes</h1>
-	<form method="POST" action="save"> {{! On revient sur le contrôleur avec la méthode POST}}
+    <body>
+        <h1>Modifier la ville</h1>
+        <form method="POST" action="save"> {{! On revient sur le contrôleur avec la méthode POST}}
 		<label for="id">Id</label>
 		{{! On pourrait mettre un champ caché <input type="hidden>"}}
 		<input name="id" 
 			{{! Mustache n'aime pas les valeurs nulles ! }}
 			{{#city.id}} value="{{city.id}}" {{/city.id}} 
 			placeholder="Read-only, auto-généré"
-			readonly="readonly"
+			readonplaceholderly="readonly"
                         id="id"
 		/>
 		<label for="nom">Nom de la ville</label>
@@ -24,7 +24,7 @@
             <input name="name" value="{{city.name}}" />
         </label>
         <label for="population">Population (en millions)</label>
-		<input name="population" value="{{city.population}}" type="number"/>
+		<input id = "id" name="population" value="{{city.population}}"/>
 		<label for="country">Pays</label>
 		<select name="country"  id="countrySelector">
 			{{#countries}} {{! Une option par pays}}
@@ -32,22 +32,6 @@
 			{{/countries}}
 		</select><hr>
 		<input type="submit" value="Enregistrer" />
-	</form>
-
-        <table>
-	<tr><th>Nom</th><th>Population</th><th>Pays</th><th>Action</th></tr>
-	{{#cities}}
-	<tr>
-		<td>{{name}}</td>
-		<td>{{population}}</td>
-		<td>{{country.name}}</td>
-                <td>
-                    <a href='edit?id={{id}}'>Modifier</a>
-                    <a href='delete?id={{id}}'>Supprimer</a>
-                </td>
-	</tr>
-	{{/cities}}
-	</table>
-</body>
-
+	</form>		
+    </body>
 </html>

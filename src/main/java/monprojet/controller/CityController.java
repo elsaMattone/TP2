@@ -20,6 +20,7 @@ public class CityController {
 	
 	// On affichera par défaut la page 'cities.mustache'
 	private static final String DEFAULT_VIEW = "cities";
+        private static final String MODIF_VIEW = "citymodif";
         
         @Autowired
 	private CityRepository cityDao;
@@ -43,34 +44,7 @@ public class CityController {
 		return DEFAULT_VIEW;
 	}
         
-        /**
-	 * Appelé par le lien 'Modifier' dans 'showCities.html'
-	 * Montre le formulaire permettant de modifier une ville
-	 * @param city à partir du code de la ville transmis en paramètre, 
-	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
-	 * @param model pour transmettre les informations à la vue
-	 * @return le nom de la vue à afficher ('formulaireCity.html')
-	 */
-	@GetMapping(path = "edit")
-	public String montreLeFormulairePourEdition(@RequestParam("id") int id, City city, Model model) {
-		model.addAttribute("city", cityDao.findById(id).get());
-                model.addAttribute("country", cityDao.findAll());
-		return "cities";
-	}
-        
-        /**
-	 * Appelé par le lien 'Supprimer' dans 'showCategories.html'
-	 * @param city à partir du code de la ville transmis en paramètre, 
-	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
-	 * @return une redirection vers l'affichage de la liste des catégories
-	 */
-	@GetMapping(path = "delete")
-	public String supprimeUneCategoriePuisMontreLaListe(@RequestParam("id") City city) {
-		cityDao.delete(city); // Ici on peut avoir une erreur (Si il y a des produits dans cette catégorie par exemple)
-		return "redirect:show"; // on se redirige vers l'affichage de la liste
-	}
-        
-        /**
+         /**
 	 * Insère une nouvelle ville dans la base
 	 * @param laVille la ville à insérer, initialisée par Spring à partir des valeurs soumises dans le formulaire
 	 * Spring fera automatiquement une requête SQL SELECT pour récupérer le pays à partir de son id.	 
@@ -84,4 +58,33 @@ public class CityController {
 		// On redirige vers la page de liste des villes
 		return "redirect:/cities/show";
 	}
+        
+        /**
+	 * Appelé par le lien 'Modifier' dans 'showCities.html'
+	 * Montre le formulaire permettant de modifier une ville
+	 * @param id à partir du code de la ville transmis en paramètre, 
+	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
+	 * @param model pour transmettre les informations à la vue
+	 * @return le nom de la vue à afficher ('formulaireCity.html')
+	 */
+	@GetMapping(path = "edit")
+	public String montreLeFormulairePourEdition(@RequestParam("id") int id, Model model) {
+		model.addAttribute("city", cityDao.findById(id).get());
+                model.addAttribute("countries", countryDao.findAll());
+		return "edit";
+	}
+        
+        /**
+	 * Appelé par le lien 'Supprimer' dans 'showCategories.html'
+	 * @param city à partir du code de la ville transmis en paramètre, 
+	 *                  Spring fera une requête SQL SELECT pour chercher la ville dans la base
+	 * @return une redirection vers l'affichage de la liste des catégories
+	 */
+	@GetMapping(path = "delete")
+	public String supprimeUneCategoriePuisMontreLaListe(@RequestParam("id") City laVille) {
+		cityDao.delete(laVille); // Ici on peut avoir une erreur (Si il y a des produits dans cette catégorie par exemple)
+		return "redirect:/cities/show"; // on se redirige vers l'affichage de la liste
+	}
+        
+       
 }
